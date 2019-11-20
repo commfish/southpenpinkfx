@@ -33,12 +33,12 @@ odd <- spenpinks2019 %>%
 #ggAcf(even)
 #ggAcf(diff(even))
 #naive (last years value)
-fc <- fcn <- naive(even, h = 5)
+fc <- fcn <- naive(even, h = 1)
 #simple exponential smoothing
 fc <- fcses <- ses(even, h = 1)
 #holt
 fc <- fch <- holt(y = even, h = 1,  exponential = FALSE) 
-#holt for the 2020 forecast don't use this method since residuals are not normal using the Ljung-Box test.
+#holt for the 2020 forecast don't use this method since residuals don't pass the Ljung-Box test.
 fc <- fch <- holt(y = even, h = 1,  exponential = TRUE) 
 #damped holt
 #fc <- holt(y = even, h = 1, level = c(80, 80),  damped = TRUE, lambda = "auto") #can specify different Prediction intervals if needed. 
