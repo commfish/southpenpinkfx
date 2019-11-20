@@ -1,5 +1,5 @@
 # notes ----
-# forecasting using timeseries
+# South Peninsula Pink forcast for Kodiak AK
 # sarah.power@alaska.gov
 # 11/19/2019
 
@@ -40,8 +40,8 @@ fc <- fcses <- ses(even, h = 1)
 fc <- fch <- holt(y = even, h = 1,  exponential = FALSE) 
 #holt for the 2020 forecast don't use this method since residuals are not normal using the Ljung-Box test.
 fc <- fch <- holt(y = even, h = 1,  exponential = TRUE) 
-#damped holt done by Heather Finkle
-fc <- holt(y = even, h = 1, level = c(80, 80),  damped = TRUE, lambda = "auto") 
+#damped holt
+#fc <- holt(y = even, h = 1, level = c(80, 80),  damped = TRUE, lambda = "auto") #can specify different Prediction intervals if needed. 
 fc <- holt(y = even, h = 1, damped = TRUE, lambda = "auto") 
 
 
