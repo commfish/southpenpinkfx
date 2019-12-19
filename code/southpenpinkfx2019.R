@@ -4,20 +4,20 @@
 # 11/19/2019
 
 # load ----
-library(fpp2)
-library(ggplot2)
-library(tidyverse)
-library(RDS)
-library(here)
-options(scipen=999)
+if(!require("tidyverse"))   install.packages("tidyverse") # data manipulation & graphing
+if(!require("RDS"))   install.packages("RDS") # forecasting
+if(!require("fpp2"))   install.packages("fpp2") # forecasting
+options(scipen=999) # prevent scientific notation everywhere
 
 # data ----
 spenpinks2019 <- read.csv('data/spenpinks2019.csv') %>% 
   select(year, run = post_june_harvest_escapement)
+#run = The number of pinks that return to south peninsula estimanted either in the harvest or in escapement.
 
 #Check for NAs and fix in this small dataset
 spenpinks2019 %>% filter(run == "NA") 
 
+# Forecasts are done on even and odd years.
 even <- spenpinks2019  %>% 
   filter(year %% 2 == 0) %>% 
   select(run) %>% 
@@ -27,11 +27,10 @@ odd <- spenpinks2019 %>%
   filter(year %% 2 == 0) %>% 
   as.ts()
 
-
 # analysis ----
-#autoplot(even)
-#ggAcf(even)
-#ggAcf(diff(even))
+
+#choose one type of analysis
+
 #naive (last years value)
 fc <- fcn <- naive(even, h = 1)
 #simple exponential smoothing
@@ -44,10 +43,14 @@ fc <- fch <- holt(y = even, h = 1,  exponential = TRUE)
 #fc <- holt(y = even, h = 1, level = c(80, 80),  damped = TRUE, lambda = "auto") #can specify different Prediction intervals if needed. 
 fc <- holt(y = even, h = 1, damped = TRUE, lambda = "auto") 
 
+#Check
+#autoplot(even)
+#ggAcf(even)
+#ggAcf(diff(even))
 
 summary(fc)
 checkresiduals(fc)
-#accuracy(fc)
+accuracy(fc)
 autoplot(fc) + autolayer(fitted(fc))
 
 #Checking we have the right number of things also used inspection to check that the most recent values are accurate. 
